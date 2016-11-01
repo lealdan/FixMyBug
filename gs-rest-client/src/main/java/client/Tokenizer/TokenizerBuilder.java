@@ -129,7 +129,12 @@ public class TokenizerBuilder {
         return tokensToString(tokens, true);
     }
 
-        // Holds the string of tokens.
+    /*
+     * Takes a list of tokens and returns the corresponding string.
+     * @Param: tokens, a list of tokens to be converted into a string.
+     * @Param: verbose,.
+     * @Return: tokens as a string.
+     */
     public static String tokensToString(List<Token> tokens, boolean verbose) {
 
         StringBuilder builder = new StringBuilder();
@@ -137,17 +142,16 @@ public class TokenizerBuilder {
         // Goes through each token, converts it into a string and adds it to builder.
         for (Token t : tokens) {
             if (verbose) {
-                builder.append(t.getType() +"(" + JavaParser.VOCABULARY
-                        .getSymbolicName(t.getType()) + ") " + "(" + t.getText() + ") \n");
+                builder.append(t.getType() + " ");
             } else {
-                builder.append(t.getType() +" ");
+                builder.append(t.getType() + " ");
             }
         }
 
         return builder.toString();
     }
 
-    /**
+    /*
      * Based on the lines specified by the user via @param start and @param stop, returns the tokenized code.
      * @Param: start, first line of tokenized code to be returned.
      * @Param: stop, last line of tokenized code to be returned.
@@ -175,5 +179,50 @@ public class TokenizerBuilder {
         }
         return tokens;
 
+    }
+
+
+    /*
+     * Harmonizes the tokenized code. Non-buggy tokenized code should be passed in. Will take this and replace tokens
+     * with appropriate variables, syntax, etc. Turns tokenized code into real code.
+     * @Param: code, holds the tokenized code.
+     * @Return: detokenizedCode, holds the de-tokenized code.
+     */
+    public String harmonize(String code) {
+
+        // Splits the string by spaces, as these separate the individual tokens.
+        String[] tokens = code.split(" ");
+
+        // Holds the detokenized, tokenized code.
+        StringBuilder builder = new StringBuilder();
+
+
+        // De-tokenizes the tokenized code.
+
+
+
+        // Converts each token into the appropriate grammatical expression.
+        for (String t: tokens) {
+
+            // Turns each token into an int, so we can get its literal name.
+            int token = Integer.parseInt(t);
+
+            // If the token is a specific token, gets its literal name.
+            if ((token != 100) && ((token < 52) || (token > 57))) {
+                builder.append(JavaParser.VOCABULARY.getLiteralName(token));
+            }
+
+            // TODO do something better here.
+            // If the token is a non-specific token, just places its symbolic name instead.
+            else {
+                builder.append(JavaParser.VOCABULARY.getSymbolicName(token));
+            }
+        }
+
+
+        // Converts builder into an actual string.
+        String detokenizedCode = builder.toString();
+
+        return detokenizedCode;
     }
 }
